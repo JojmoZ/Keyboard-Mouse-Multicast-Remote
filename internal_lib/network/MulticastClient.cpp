@@ -19,7 +19,6 @@ void  UdpMultiCastClient::listen_loop() {
             auto data = recv_buffer.data();
             if (isMouseData(data, 16)){
                 parseMouseData(mState, data, bytes_received);
-                  // Handle the received MouseState
                   std::cout << "Received packet from " 
                               << sender_endpoint.address().to_string() << ": "
                               << "dx=" << mState.dx 
@@ -37,6 +36,12 @@ void  UdpMultiCastClient::listen_loop() {
                     << ", code=" << kState.code
                     << std::endl;
                 WinApplyKeyInput(kState.press, kState.code );
+            }else{
+                CommandAction act = parseCommandData(data, 16);
+                if (act == CommandAction::STOP_ACTION){
+                    std::cout<<"Received STOP_ACTION command, exiting listen loop"<<std::endl;
+                    return; // end program by return
+                }
             }
 
             

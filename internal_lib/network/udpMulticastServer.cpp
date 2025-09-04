@@ -41,3 +41,7 @@ void UdpMulticastServer::send_loop(int interval_seconds, KeyboardCapture * Keybo
         std::this_thread::sleep_for(std::chrono::milliseconds(interval_seconds));
     }
 }
+
+void UdpMulticastServer::send(uint8_t *buf, int len) {
+    socket.send_to(asio::buffer(buf, 16), multicast_endpoint);
+}

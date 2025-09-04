@@ -1,0 +1,1 @@
+ar rcs libcontroller.a build/*.o

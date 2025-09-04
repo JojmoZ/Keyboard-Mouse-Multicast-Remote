@@ -89,9 +89,6 @@ void formatKeyboardData(KeyboardState &kState, uint8_t *buf, int len){
     memcpy(buf+4, &kState.code, sizeof(kState.code));  // x
 }
 
-
-
-
 void parseKeyboardData(KeyboardState &kState, const uint8_t *buf, int len){
     kState.code =0;
     kState.press =0;
@@ -112,4 +109,17 @@ void parseKeyboardData(KeyboardState &kState, const uint8_t *buf, int len){
         memcpy(&kState.code, buf+4, sizeof(kState.code));
     }
 
+}
+
+
+void formatCommandData(CommandAction act,  uint8_t *buf , int len){
+    clearBuff(buf, len);
+    buf[0] = act ; // Command Action
+}
+
+CommandAction parseCommandData(const uint8_t *buf, int len){
+    if (buf[0] ==  CommandAction::STOP_ACTION) {
+        return CommandAction::STOP_ACTION;
+    }
+    return CommandAction::UNKNOWN_ACTION;
 }

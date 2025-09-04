@@ -25,6 +25,13 @@
 #define KEYBOARD_KEYDOWN    0x01
 #define KEYBOARD_KEYUP      0x00   
 
+// Command
+
+enum CommandAction {
+    STOP_ACTION = 0xFF,
+    UNKNOWN_ACTION
+};
+
 //General Function
 void clearBuff(uint8_t *buf, int len );
 
@@ -41,3 +48,8 @@ void parseMouseData(MouseState &mState, const uint8_t *buf, int len);
 void formatKeyboardData(KeyboardState &kState, uint8_t *buf, int len);
 
 void parseKeyboardData(KeyboardState &kState, const uint8_t *buf, int len);
+
+
+// ConvertFunction CommandState To Byte
+void formatCommandData(CommandAction act,  uint8_t *buf , int len);
+CommandAction parseCommandData(const uint8_t *buf, int len);

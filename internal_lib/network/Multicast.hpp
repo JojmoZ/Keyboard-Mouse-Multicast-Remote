@@ -26,6 +26,7 @@ struct UdpMulticastServer {
 
     void send_loop(int interval_seconds, MouseCapture * mouseCapture);
     void send_loop(int interval_seconds, KeyboardCapture * KeyboardCapture);
+    void send(uint8_t *buf, int len);
 };
 
 

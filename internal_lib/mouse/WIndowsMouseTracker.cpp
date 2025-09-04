@@ -67,12 +67,12 @@ void PollMouseWindows(MouseCapture& cap) {
         short wheelNow = HIWORD(GetAsyncKeyState(VK_MBUTTON)); // or track WM_MOUSEWHEEL in a real window
   
 
-        int dx = pos.x - prevPos.x;
-        int dy = pos.y - prevPos.y;
+        int dx = pos.x;
+        int dy = pos.y;
         int dz = scrollDelta.exchange(0);
 
         // Only push if there is a change
-        if (dx != 0 || dy != 0 || leftNow != prevLeft || rightNow != prevRight
+        if (dx != prevPos.x || dy != prevPos.y|| leftNow != prevLeft || rightNow != prevRight
             || middleNow != prevMiddle || dz != 0) {
 
             cap.push(dx, dy, dz, leftNow, rightNow, middleNow);
@@ -94,11 +94,15 @@ void WinApplyMouseState(const MouseState& state, MouseState& prevState) {
 
     // --- Move mouse relative ---
     if (state.dx != 0 || state.dy != 0) {
-        input.mi.dx = state.dx;
-        input.mi.dy = state.dy;
-        input.mi.dwFlags = MOUSEEVENTF_MOVE;
-        SendInput(1, &input, sizeof(INPUT));
-    }
+    input.mi = {};
+    input.type = INPUT_MOUSE;
+    input.mi.dwFlags = MOUSEEVENTF_MOVE | MOUSEEVENTF_ABSOLUTE;
+
+    input.mi.dx = (state.dx * 65535) / GetSystemMetrics(SM_CXSCREEN);
+    input.mi.dy = (state.dy * 65535) / GetSystemMetrics(SM_CYSCREEN);
+
+    SendInput(1, &input, sizeof(INPUT));
+}
 
     // --- Scroll wheel ---
     if (state.dScroll != 0) {

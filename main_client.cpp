@@ -2,12 +2,12 @@
 #include <iostream>
 #include <string>
 int main(){
-    std::string addr; 
+    std::string serverIP; 
     int port;
-    std::cout<<"addr: ";
-    std::cin>>addr;
-    std::cout<<"port: ";
-    std::cin>>port;
-    
-    startClient(addr, port);
+    std::cout << "Enter server IP: ";
+    std::cin >> serverIP;
+    std::cout << "Enter port: ";
+    std::cin >> port;
+
+    startClient(serverIP, port);
 }
