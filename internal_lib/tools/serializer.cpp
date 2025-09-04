@@ -1,5 +1,6 @@
 #include "serializer.hpp"
 #include <iostream>
+#include <cstring>
 void clearBuff(uint8_t *buf, int len ){
     for (int i=0; i<len; i++){
         buf[i]= 0x00;
