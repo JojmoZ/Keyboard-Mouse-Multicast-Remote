@@ -14,19 +14,27 @@ struct UdpMulticastServer {
     asio::io_context& io_context;
     asio::ip::udp::socket socket;
     asio::ip::udp::endpoint multicast_endpoint;
+    std::atomic<bool> active{true};
+
+
+    std::thread mouseThread;
+    std::thread keyboardThread;
 
     UdpMulticastServer(asio::io_context& io, const std::string& address,
                        unsigned short port)
         : io_context(io),
           socket(io_context, asio::ip::udp::v4()),
           multicast_endpoint(asio::ip::make_address(address), port)
-    {
+    {}
+   // Public methods to control the server
+    void start(int interval_ms, MouseCapture* mouse, KeyboardCapture* keyboard);
+    void send(uint8_t* buf, int len);
+    void close();
 
-    }
-
-    void send_loop(int interval_seconds, MouseCapture * mouseCapture);
-    void send_loop(int interval_seconds, KeyboardCapture * KeyboardCapture);
-    void send(uint8_t *buf, int len);
+private:
+    // Loops are now private implementation details
+    void send_loop(int interval_ms, MouseCapture* mouseCapture);
+    void send_loop(int interval_ms, KeyboardCapture* keyboardCapture);
 };
 
 
